@@ -12,6 +12,7 @@ type Store struct {
 	Db *gorm.DB
 
 	User UserRepo
+	Post PostRepo
 }
 
 // New creates new repository
@@ -26,6 +27,7 @@ func New(ctx context.Context, db *gorm.DB) (*Store, error) {
 	if db != nil {
 		store.Db = db
 		store.User = NewUserMysqlRepo(db)
+		store.Post = NewPostMysqlRepo(db)
 	}
 
 	return &store, nil

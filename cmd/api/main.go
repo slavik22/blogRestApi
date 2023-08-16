@@ -54,6 +54,7 @@ func run() error {
 
 	// Init controllers
 	userController := controller.NewUserController(ctx, serviceManager)
+	postController := controller.NewUPostController(ctx, serviceManager)
 
 	// Initialize Echo instance
 	e := echo.New()
@@ -83,18 +84,13 @@ func run() error {
 	{
 		posts := api.Group("/posts")
 		{
-			posts.GET("/", func(c echo.Context) error {
-				return c.JSON(http.StatusOK, "ok")
-			})
+			posts.GET("/", postController.GetAllPosts)
+			posts.GET("/:id", postController.GetPostById)
+			posts.POST("/", postController.CreatePost)
+			posts.DELETE("/:id", postController.DeletePost)
+			posts.PUT("/:id", postController.UpdatePost)
 		}
 	}
-
-	// User routes
-	//userRoutes := v1.Group("/user")
-	//userRoutes.POST("/", userController.Create)
-	//userRoutes.GET("/:id", userController.Get)
-	//userRoutes.DELETE("/:id", userController.Delete)
-	//userRoutes.PUT("/:id", userController.Update)
 
 	// Start server
 	s := &http.Server{

@@ -7,6 +7,6 @@ type Post struct {
 	CreatedAt time.Time
 	Title     string `json:"title"`
 	Body      string `json:"body"`
-	UserId    string `json:"userId"`
-	User      User   `gorm:"foreignKey:UserId"`
+	UserId    uint   `json:"userId"`
+	User      User   `gorm:"foreignKey:UserId" json:"-"`
 }

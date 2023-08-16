@@ -6,8 +6,8 @@ import (
 	"github.com/slavik22/blogRestApi"
 	"github.com/slavik22/blogRestApi/controller"
 	"github.com/slavik22/blogRestApi/lib/validator"
+	"github.com/slavik22/blogRestApi/repository"
 	"github.com/slavik22/blogRestApi/service"
-	"github.com/slavik22/blogRestApi/store"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"net/http"
@@ -39,11 +39,11 @@ func run() error {
 	//db, err := gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8&parseTime=True&loc=Local", cfg.MysqlUser, cfg.MysqlPassword, cfg.MysqlAddr, cfg.MysqlDB)))
 	db, err := gorm.Open(mysql.Open(cfg.DBSource))
 
-	// Init repository store (with mysql inside)
-	store, err := store.New(ctx, db)
+	// Init repository (with mysql inside)
+	store, err := repository.New(ctx, db)
 
 	if err != nil {
-		return errors.Wrap(err, "store.New failed")
+		return errors.Wrap(err, "repository.New failed")
 	}
 
 	// Init service manager
@@ -53,7 +53,7 @@ func run() error {
 	}
 
 	// Init controllers
-	userController := controller.NewUsers(ctx, serviceManager)
+	userController := controller.NewUserController(ctx, serviceManager)
 
 	// Initialize Echo instance
 	e := echo.New()
@@ -73,11 +73,27 @@ func run() error {
 	// API V1
 	v1 := e.Group("/v1")
 
+	auth := v1.Group("/auth")
+	{
+		auth.POST("/sign-up", userController.SignUp)
+		auth.POST("/sign-in", userController.SignIn)
+	}
+
+	api := v1.Group("/api", userController.UserIdentity)
+	{
+		posts := api.Group("/posts")
+		{
+			posts.GET("/", func(c echo.Context) error {
+				return c.JSON(http.StatusOK, "ok")
+			})
+		}
+	}
+
 	// User routes
-	userRoutes := v1.Group("/user")
-	userRoutes.POST("/", userController.Create)
-	userRoutes.GET("/:id", userController.Get)
-	userRoutes.DELETE("/:id", userController.Delete)
+	//userRoutes := v1.Group("/user")
+	//userRoutes.POST("/", userController.Create)
+	//userRoutes.GET("/:id", userController.Get)
+	//userRoutes.DELETE("/:id", userController.Delete)
 	//userRoutes.PUT("/:id", userController.Update)
 
 	// Start server

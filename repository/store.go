@@ -1,4 +1,4 @@
-package store
+package repository
 
 import (
 	"context"
@@ -14,7 +14,7 @@ type Store struct {
 	User UserRepo
 }
 
-// New creates new store
+// New creates new repository
 func New(ctx context.Context, db *gorm.DB) (*Store, error) {
 	if err := db.AutoMigrate(&model.User{}); err != nil {
 		log.Println(err)

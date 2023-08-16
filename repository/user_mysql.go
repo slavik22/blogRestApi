@@ -1,4 +1,4 @@
-package store
+package repository
 
 import (
 	"context"
@@ -18,17 +18,10 @@ func NewUserMysqlRepo(db *gorm.DB) *UserMysqlRepo {
 }
 
 // GetUser retrieves user from Postgres
-func (repo *UserMysqlRepo) GetUser(ctx context.Context, id uint) (*model.User, error) {
-	if id < 0 {
-		return nil, errors.New("No user ID provided")
-	}
-
+func (repo *UserMysqlRepo) GetUser(ctx context.Context, email, password string) (*model.User, error) {
 	var user model.User
-	err := repo.db.First(&user, "id = ?", id).Error
+	err := repo.db.First(&user, "email = ? AND password = ?", email, password).Error
 	if err != nil {
-		if err == gorm.ErrRecordNotFound { //not found
-			return nil, nil
-		}
 		return nil, err
 	}
 
@@ -36,15 +29,15 @@ func (repo *UserMysqlRepo) GetUser(ctx context.Context, id uint) (*model.User, e
 }
 
 // CreateUser creates user in Postgres
-func (repo *UserMysqlRepo) CreateUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (repo *UserMysqlRepo) CreateUser(ctx context.Context, user *model.User) (uint, error) {
 	if user == nil {
-		return nil, errors.New("No user provided")
+		return 0, errors.New("No user provided")
 	}
 	err := repo.db.Create(user).Error
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
-	return user, nil
+	return user.ID, nil
 }
 
 // UpdateUser updates user in Postgres

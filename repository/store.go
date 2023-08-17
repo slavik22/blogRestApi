@@ -11,13 +11,14 @@ import (
 type Store struct {
 	Db *gorm.DB
 
-	User UserRepo
-	Post PostRepo
+	User    UserRepo
+	Post    PostRepo
+	Comment CommentRepo
 }
 
 // New creates new repository
 func New(ctx context.Context, db *gorm.DB) (*Store, error) {
-	if err := db.AutoMigrate(&model.User{}); err != nil {
+	if err := db.AutoMigrate(&model.User{}, &model.Post{}, &model.Comment{}); err != nil {
 		log.Println(err)
 	}
 
@@ -28,6 +29,7 @@ func New(ctx context.Context, db *gorm.DB) (*Store, error) {
 		store.Db = db
 		store.User = NewUserMysqlRepo(db)
 		store.Post = NewPostMysqlRepo(db)
+		store.Comment = NewCommentMysqlRepo(db)
 	}
 
 	return &store, nil

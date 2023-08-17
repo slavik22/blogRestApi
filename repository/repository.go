@@ -25,3 +25,11 @@ type PostRepo interface {
 	UpdatePost(context.Context, *model.Post) (*model.Post, error)
 	DeletePost(context.Context, uint, uint) error
 }
+
+type CommentRepo interface {
+	GetComments(context.Context) ([]model.Comment, error)
+	GetComment(context.Context, uint) (*model.Comment, error)
+	CreateComment(context.Context, *model.Comment) (uint, error)
+	UpdateComment(context.Context, *model.Comment) (*model.Comment, error)
+	DeleteComment(context.Context, uint, uint) error
+}

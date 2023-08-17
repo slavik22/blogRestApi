@@ -180,29 +180,3 @@ func (h *PostController) DeletePost(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, "post deleted")
 }
-
-//func (u *PostController) SignUp(c echo.Context) error {
-//	var input model.Post
-//
-//	if err := c.Bind(&input); err != nil {
-//		return echo.NewHTTPError(http.StatusBadRequest, errors.Wrap(err, "could not decode Post data"))
-//	}
-//
-//	err := c.Validate(&input)
-//	if err != nil {
-//		return echo.NewHTTPError(http.StatusUnprocessableEntity, err)
-//	}
-//
-//	createdPost, err := u.services..CreatePost(input)
-//
-//	if err != nil {
-//		switch {
-//		case errors.Cause(err) == types.ErrBadRequest:
-//			return echo.NewHTTPError(http.StatusBadRequest, err)
-//		default:
-//			return echo.NewHTTPError(http.StatusInternalServerError, errors.Wrap(err, "could not create Post"))
-//		}
-//	}
-//
-//	return c.JSON(http.StatusCreated, createdPost)
-//}

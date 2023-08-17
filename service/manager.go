@@ -8,8 +8,9 @@ import (
 
 // Manager is just a collection of all services we have in the project
 type Manager struct {
-	UserService UserServ
-	PostService PostServ
+	UserService    UserServ
+	PostService    PostServ
+	CommentService CommentServ
 }
 
 // NewManager creates new service manager
@@ -18,7 +19,8 @@ func NewManager(ctx context.Context, store *repository.Store) (*Manager, error) 
 		return nil, errors.New("No repository provided")
 	}
 	return &Manager{
-		UserService: NewUserService(ctx, store),
-		PostService: NewPostService(ctx, store),
+		UserService:    NewUserService(ctx, store),
+		PostService:    NewPostService(ctx, store),
+		CommentService: NewCommentService(ctx, store),
 	}, nil
 }

@@ -20,3 +20,11 @@ type PostServ interface {
 	UpdatePost(post model.Post) (*model.Post, error)
 	DeletePost(postId uint, userId uint) error
 }
+
+type CommentServ interface {
+	GetComments() ([]model.Comment, error)
+	GetComment(commentId uint) (*model.Comment, error)
+	CreateComment(comment model.Comment, userId uint) (uint, error)
+	UpdateComment(comment model.Comment) (*model.Comment, error)
+	DeleteComment(commentId uint, userId uint) error
+}

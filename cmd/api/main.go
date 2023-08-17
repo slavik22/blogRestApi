@@ -36,7 +36,6 @@ func run() error {
 	// logger
 	//l := logger.Get()
 
-	//db, err := gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8&parseTime=True&loc=Local", cfg.MysqlUser, cfg.MysqlPassword, cfg.MysqlAddr, cfg.MysqlDB)))
 	db, err := gorm.Open(mysql.Open(cfg.DBSource))
 
 	// Init repository (with mysql inside)
@@ -55,6 +54,7 @@ func run() error {
 	// Init controllers
 	userController := controller.NewUserController(ctx, serviceManager)
 	postController := controller.NewUPostController(ctx, serviceManager)
+	commentController := controller.NewUCommentController(ctx, serviceManager)
 
 	// Initialize Echo instance
 	e := echo.New()
@@ -89,6 +89,15 @@ func run() error {
 			posts.POST("/", postController.CreatePost)
 			posts.DELETE("/:id", postController.DeletePost)
 			posts.PUT("/:id", postController.UpdatePost)
+		}
+
+		comments := api.Group("/comments")
+		{
+			comments.GET("/", commentController.GetAllComments)
+			comments.GET("/:id", commentController.GetCommentById)
+			comments.POST("/", commentController.CreateComment)
+			comments.DELETE("/:id", commentController.DeleteComment)
+			comments.PUT("/:id", commentController.UpdateComment)
 		}
 	}
 

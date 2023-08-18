@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	"github.com/slavik22/blogRestApi/lib/util"
 	"net/http"
 	"strings"
 )
@@ -13,7 +14,7 @@ const (
 	userCtx             = "userId"
 )
 
-func (u *UserController) UserIdentity(next echo.HandlerFunc) echo.HandlerFunc {
+func UserIdentity(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		header := c.Request().Header.Get(authorizationHeader)
 		fmt.Println(header)
@@ -30,7 +31,7 @@ func (u *UserController) UserIdentity(next echo.HandlerFunc) echo.HandlerFunc {
 			return echo.NewHTTPError(http.StatusUnauthorized, "token is empty")
 		}
 
-		userId, err := u.services.UserService.ParseToken(headerParts[1])
+		userId, err := util.ParseToken(headerParts[1])
 		if err != nil {
 			return echo.NewHTTPError(http.StatusUnauthorized, "token is incorrect")
 		}

@@ -18,9 +18,9 @@ func NewUserMysqlRepo(db *gorm.DB) *UserMysqlRepo {
 }
 
 // GetUser retrieves user from Postgres
-func (repo *UserMysqlRepo) GetUser(ctx context.Context, email, password string) (*model.User, error) {
+func (repo *UserMysqlRepo) GetUser(ctx context.Context, email string) (*model.User, error) {
 	var user model.User
-	err := repo.db.First(&user, "email = ? AND password = ?", email, password).Error
+	err := repo.db.First(&user, "email = ?", email).Error
 	if err != nil {
 		return nil, err
 	}

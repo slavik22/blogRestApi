@@ -7,8 +7,7 @@ import (
 //go:generate mockery --dir . --name UserService --output ./mocks
 type UserServ interface {
 	CreateUser(user model.User) (uint, error)
-	ParseToken(accessToken string) (uint, error)
-	GenerateToken(email, password string) (string, error)
+	SignIn(email, password string) (string, error)
 	//UpdateUser(context.Context, *model.User) (*model.User, error)
 	//DeleteUser(context.Context, uint) error
 }

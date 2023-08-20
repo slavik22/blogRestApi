@@ -38,8 +38,12 @@ func run() error {
 
 	db, err := gorm.Open(mysql.Open(cfg.DBSource))
 
+	userRepo := repository.NewUserMysqlRepo(db)
+	commentRepo := repository.NewCommentMysqlRepo(db)
+	postRepo := repository.NewPostMysqlRepo(db)
+
 	// Init repository (with mysql inside)
-	store, err := repository.New(ctx, db)
+	store, err := repository.New(ctx, db, userRepo, postRepo, commentRepo)
 
 	if err != nil {
 		return errors.Wrap(err, "repository.New failed")
@@ -80,7 +84,7 @@ func run() error {
 		auth.POST("/sign-in", userController.SignIn)
 	}
 
-	api := v1.Group("/api", userController.UserIdentity)
+	api := v1.Group("/api", controller.UserIdentity)
 	{
 		posts := api.Group("/posts")
 		{

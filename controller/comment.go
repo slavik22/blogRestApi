@@ -102,7 +102,7 @@ func (h *CommentController) CreateComment(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
-	return c.JSON(http.StatusOK, id)
+	return c.JSON(http.StatusCreated, id)
 }
 
 // UpdateComment @Summary Update Comment

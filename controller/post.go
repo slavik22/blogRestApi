@@ -103,7 +103,7 @@ func (h *PostController) CreatePost(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
-	return c.JSON(http.StatusOK, id)
+	return c.JSON(http.StatusCreated, id)
 }
 
 // UpdatePost @Summary Update Post

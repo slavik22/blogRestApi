@@ -16,7 +16,6 @@ type UserController struct {
 	services *service.Manager
 }
 
-// NewUsers creates a new user controller.
 func NewUserController(ctx context.Context, services *service.Manager) *UserController {
 	return &UserController{
 		ctx:      ctx,
@@ -62,7 +61,7 @@ func (u *UserController) SignIn(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 
-	token, err := u.services.UserService.GenerateToken(input.Email, input.Password)
+	token, err := u.services.UserService.SignIn(input.Email, input.Password)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, errors.Wrap(err, "could not create user"))
 	}

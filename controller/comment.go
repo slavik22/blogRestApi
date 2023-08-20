@@ -10,32 +10,22 @@ import (
 	"strconv"
 )
 
-// CommentController ...
 type CommentController struct {
 	ctx      context.Context
 	services *service.Manager
 }
 
-// NewUCommentController creates a new Comment controller.
-func NewUCommentController(ctx context.Context, services *service.Manager) *CommentController {
-	return &CommentController{
-		ctx:      ctx,
-		services: services,
-	}
-}
-
-// GetAllComments @Summary Get All Comments
-// @Security ApiKeyAuth
-// @Tags Comments
-// @Description get all Comments
-// @ID get-all-Comments
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} []model.Comment
-// @Failure 400,404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Failure default {object} errorResponse
-// @Router v1/api/Comments [get]
+// GetAllComments godoc
+//
+//	@Summary		Get All Comments
+//	@Security		ApiKeyAuth
+//	@Tags			Comments
+//	@Description	get all Comments
+//	@ID				get-all-Comments
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]model.Comment
+//	@Router			/api/v1/Comments [get]
 func (h *CommentController) GetAllComments(c echo.Context) error {
 	Comments, err := h.services.CommentService.GetComments()
 	if err != nil {
@@ -45,15 +35,17 @@ func (h *CommentController) GetAllComments(c echo.Context) error {
 	return c.JSON(http.StatusOK, Comments)
 }
 
-// GetCommentById @Summary Get Comment By ID
-// @Security ApiKeyAuth
-// @Tags Comments
-// @Description get model.Comment by id
-// @ID get-Comment-by-id
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} model.Comment
-// @Router v1/api/Comments/:id [get]
+// GetCommentById godoc
+//
+//	@Summary		Get Comment By ID
+//	@Security		ApiKeyAuth
+//	@Tags			Comments
+//	@Description	get model.Comment by id
+//	@ID				get-Comment-by-id
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	model.Comment
+//	@Router			/api/v1/Comments/:id [get]
 func (h *CommentController) GetCommentById(c echo.Context) error {
 	CommentId, err := strconv.Atoi(c.Param("id"))
 
@@ -70,16 +62,17 @@ func (h *CommentController) GetCommentById(c echo.Context) error {
 	return c.JSON(http.StatusOK, Comment)
 }
 
-// CreateComment @Summary Create Comment
-// @Security ApiKeyAuth
-// @Tags Comment
-// @Description create Comment
-// @Description create model.Comment
-// @ID create-Comment
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} createCommentResponse
-// @Router v1/api/Comments [Comment]
+// CreateComment godoc
+//
+//	@Summary		Create Comment
+//	@Security		ApiKeyAuth
+//	@Tags			Comment
+//	@Description	create model.Comment
+//	@ID				create-Comment
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{uint}	id
+//	@Router			/api/v1/Comments [Post]
 func (h *CommentController) CreateComment(c echo.Context) error {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -105,15 +98,17 @@ func (h *CommentController) CreateComment(c echo.Context) error {
 	return c.JSON(http.StatusCreated, id)
 }
 
-// UpdateComment @Summary Update Comment
-// @Security ApiKeyAuth
-// @Tags Comment
-// @Description update model.Comment
-// @ID update-Comment
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} model.Comment
-// @Router v1/api/Comments [update]
+// UpdateComment godoc
+//
+//	@Summary		Update Comment
+//	@Security		ApiKeyAuth
+//	@Tags			Comment
+//	@Description	update model.Comment
+//	@ID				update-Comment
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	model.Comment
+//	@Router			/api/v1/Comments [put]
 func (h *CommentController) UpdateComment(c echo.Context) error {
 	userId, err := getUserId(c)
 
@@ -145,20 +140,17 @@ func (h *CommentController) UpdateComment(c echo.Context) error {
 	return c.JSON(http.StatusOK, *updatedComment)
 }
 
-//type CommentUpdateRequest struct {
-//	Title string
-//	Body  string
-//}
-
-// DeleteComment @Summary Delete Comment
-// @Security ApiKeyAuth
-// @Tags Comment
-// @Description delete model.Comment
-// @ID delete-Comment
-// @Accept  json
-// @Produce  json
-// @Success 200
-// @Router v1/api/Comments [delete]
+// DeleteComment godoc
+//
+//	@Summary		Delete Comment
+//	@Security		ApiKeyAuth
+//	@Tags			Comment
+//	@Description	delete model.Comment
+//	@ID				delete-Comment
+//	@Accept			json
+//	@Produce		json
+//	@Success		200
+//	@Router			/api/v1/Comments [delete]
 func (h *CommentController) DeleteComment(c echo.Context) error {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -178,4 +170,11 @@ func (h *CommentController) DeleteComment(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, "Comment deleted")
+}
+
+func NewUCommentController(ctx context.Context, services *service.Manager) *CommentController {
+	return &CommentController{
+		ctx:      ctx,
+		services: services,
+	}
 }

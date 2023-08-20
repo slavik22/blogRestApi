@@ -10,13 +10,11 @@ import (
 	"strconv"
 )
 
-// PostController ...
 type PostController struct {
 	ctx      context.Context
 	services *service.Manager
 }
 
-// NewUPostController creates a new Post controller.
 func NewUPostController(ctx context.Context, services *service.Manager) *PostController {
 	return &PostController{
 		ctx:      ctx,
@@ -24,18 +22,17 @@ func NewUPostController(ctx context.Context, services *service.Manager) *PostCon
 	}
 }
 
-// GetAllPosts @Summary Get All Posts
-// @Security ApiKeyAuth
-// @Tags Posts
-// @Description get all Posts
-// @ID get-all-Posts
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} []model.Post
-// @Failure 400,404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Failure default {object} errorResponse
-// @Router v1/api/posts [get]
+// GetAllPosts godoc
+//
+//	@Summary		Get All Posts
+//	@Security		ApiKeyAuth
+//	@Tags			Posts
+//	@Description	get all Posts
+//	@ID				get-all-Posts
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]model.Post
+//	@Router			/api/v1/posts [get]
 func (h *PostController) GetAllPosts(c echo.Context) error {
 	posts, err := h.services.PostService.GetPosts()
 	if err != nil {
@@ -45,15 +42,17 @@ func (h *PostController) GetAllPosts(c echo.Context) error {
 	return c.JSON(http.StatusOK, posts)
 }
 
-// GetPostById @Summary Get Post By ID
-// @Security ApiKeyAuth
-// @Tags Posts
-// @Description get model.Post by id
-// @ID get-Post-by-id
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} model.Post
-// @Router v1/api/posts/:id [get]
+// GetPostById godoc
+//
+//	@Summary		Get Post By ID
+//	@Security		ApiKeyAuth
+//	@Tags			Posts
+//	@Description	get model.Post by id
+//	@ID				get-Post-by-id
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	model.Post
+//	@Router			/api/v1/posts/:id [get]
 func (h *PostController) GetPostById(c echo.Context) error {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -75,16 +74,18 @@ func (h *PostController) GetPostById(c echo.Context) error {
 	return c.JSON(http.StatusOK, post)
 }
 
-// CreatePost @Summary Create Post
-// @Security ApiKeyAuth
-// @Tags Post
-// @Description create Post
-// @Description create model.Post
-// @ID create-Post
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} createPostResponse
-// @Router v1/api/posts [post]
+// CreatePost godoc
+//
+//	@Summary		Create Post
+//	@Security		ApiKeyAuth
+//	@Tags			Post
+//	@Description	create Post
+//	@Description	create model.Post
+//	@ID				create-Post
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{uint}	id
+//	@Router			/api/v1/posts [post]
 func (h *PostController) CreatePost(c echo.Context) error {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -106,15 +107,17 @@ func (h *PostController) CreatePost(c echo.Context) error {
 	return c.JSON(http.StatusCreated, id)
 }
 
-// UpdatePost @Summary Update Post
-// @Security ApiKeyAuth
-// @Tags Post
-// @Description update model.Post
-// @ID update-Post
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} model.Post
-// @Router v1/api/posts [update]
+// UpdatePost godoc
+//
+//	@Summary		Update Post
+//	@Security		ApiKeyAuth
+//	@Tags			Post
+//	@Description	update model.Post
+//	@ID				update-Post
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	model.Post
+//	@Router			/api/v1/posts [put]
 func (h *PostController) UpdatePost(c echo.Context) error {
 	userId, err := getUserId(c)
 
@@ -146,20 +149,17 @@ func (h *PostController) UpdatePost(c echo.Context) error {
 	return c.JSON(http.StatusOK, *updatedPost)
 }
 
-//type postUpdateRequest struct {
-//	Title string
-//	Body  string
-//}
-
-// DeletePost @Summary Delete Post
-// @Security ApiKeyAuth
-// @Tags Post
-// @Description delete model.Post
-// @ID delete-Post
-// @Accept  json
-// @Produce  json
-// @Success 200
-// @Router v1/api/posts [delete]
+// DeletePost godoc
+//
+//	@Summary		Delete Post
+//	@Security		ApiKeyAuth
+//	@Tags			Post
+//	@Description	delete model.Post
+//	@ID				delete-Post
+//	@Accept			json
+//	@Produce		json
+//	@Success		200
+//	@Router			/api/v1/posts [delete]
 func (h *PostController) DeletePost(c echo.Context) error {
 	userId, err := getUserId(c)
 	if err != nil {

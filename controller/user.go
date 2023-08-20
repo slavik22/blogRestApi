@@ -16,7 +16,6 @@ type UserController struct {
 	services *service.Manager
 }
 
-// NewUsers creates a new user controller.
 func NewUserController(ctx context.Context, services *service.Manager) *UserController {
 	return &UserController{
 		ctx:      ctx,

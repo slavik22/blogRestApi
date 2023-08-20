@@ -10,7 +10,6 @@ import (
 	"net/http"
 )
 
-// UserController ...
 type UserController struct {
 	ctx      context.Context
 	services *service.Manager
@@ -23,6 +22,17 @@ func NewUserController(ctx context.Context, services *service.Manager) *UserCont
 	}
 }
 
+// SignUp godoc
+//
+//	@Summary		SignUp user
+//	@Tags			User
+//	@Description	Create new user
+//	@Description	create model.Post
+//	@ID				SignUp
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	model.User
+//	@Router			/api/v1/auth/sign-up [post]
 func (u *UserController) SignUp(c echo.Context) error {
 	var input model.User
 
@@ -53,7 +63,20 @@ type signInInput struct {
 	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
+type signInOutput struct {
+	Token string `json:"token"`
+}
 
+// SignIn godoc
+//
+//	@Summary		SignIn user
+//	@Tags			User
+//	@Description	Login new user and returns token
+//	@ID				SignIn
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	signInOutput
+//	@Router			/api/v1/auth/sign-in [post]
 func (u *UserController) SignIn(c echo.Context) error {
 	var input signInInput
 
@@ -66,7 +89,5 @@ func (u *UserController) SignIn(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, errors.Wrap(err, "could not create user"))
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"token": token,
-	})
+	return c.JSON(http.StatusOK, signInOutput{Token: token})
 }
